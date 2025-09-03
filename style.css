@@ -1,0 +1,858 @@
+/* --------------------
+  Global Reset & Themes
+--------------------- */
+:root {
+  --bg-color: #f0f4f8; /* Light blue-gray background */
+  --text-color: #1a1a1a;
+  --accent-color: #00b894; /* Teal */
+  --danger-color: #ff7675; /* Red */
+  --alert-color: #fdcb6e; /* Orange */
+  --main-bg: #ffffff; /* White for main content */
+  --sidebar-bg: #e2e8f0; /* Lighter blue-gray for sidebar */
+  --map-bg: #f8fafc; /* Even lighter for map container */
+  --border-color: #cbd5e1; /* Subtle border */
+  --shadow-light: 0 4px 10px rgba(0, 0, 0, 0.05);
+  --shadow-medium: 0 8px 20px rgba(0, 0, 0, 0.1);
+
+  --dark-bg: #1e293b; /* Dark blue-gray for body */
+  --dark-text: #e2e8f0;
+  --dark-main-bg: #2d3748; /* Darker blue-gray for main content */
+  --dark-sidebar-bg: #1a202c; /* Even darker for sidebar */
+  --dark-map-bg: #242b38; /* Dark for map container */
+  --dark-border-color: #4a5568;
+  --dark-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+body.dark {
+  --bg-color: var(--dark-bg);
+  --text-color: var(--dark-text);
+  --main-bg: var(--dark-main-bg);
+  --sidebar-bg: var(--dark-sidebar-bg);
+  --map-bg: var(--dark-map-bg);
+  --border-color: var(--dark-border-color);
+  --shadow-light: var(--dark-shadow);
+  --shadow-medium: var(--dark-shadow);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* --------------------
+  General Layout
+--------------------- */
+body, html {
+  font-family: 'Inter', sans-serif; /* Consistent font */
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  height: 100%;
+  width: 100%;
+  /* REMOVE: overflow: hidden; -> Allow body to scroll if app overflows */
+}
+
+.app {
+  display: grid;
+  grid-template-columns: 280px 1fr 380px; /* Original grid layout */
+  grid-template-rows: auto 1fr auto; /* Header, Content, Footer */
+  grid-template-areas:
+    "header header header"
+    "sidebar main map"
+    "footer footer footer"; /* Footer spans all columns */
+  height: 100vh; /* Full viewport height on desktop */
+  border-radius: 1.5rem; /* Rounded corners for the entire app container */
+  overflow: hidden; /* Ensures internal elements respect border-radius, but main/sidebar handle their own scroll */
+  box-shadow: var(--shadow-medium); /* Overall app shadow */
+}
+
+/* --------------------
+  Header
+--------------------- */
+#header {
+  grid-area: header;
+  padding: 1rem 1.5rem;
+  background: var(--accent-color);
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1); /* Added header shadow for more depth */
+}
+
+#header h1 {
+  font-size: 1.8rem; /* Larger title */
+  font-weight: 700;
+  margin-right: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem; /* Space between text and compass */
+}
+
+/* Logo text styling */
+.logo-text {
+  font-size: 1.8em; /* Make the text larger, relative to h1 */
+  font-weight: 800; /* Extra bold */
+  letter-spacing: -0.05em; /* Tighter spacing */
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.2); /* Subtle shadow for depth */
+  background: linear-gradient(45deg, #fceb00, #ffc107); /* Yellow/orange gradient */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: #fceb00; /* Fallback for browsers not supporting gradient text */
+}
+
+
+.header-info {
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
+.network-details {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 0.75rem; /* Rounded badge */
+  padding: 0.5rem 1rem;
+  font-size: 0.85rem;
+  display: flex; /* Make it a flex container */
+  flex-wrap: wrap; /* Allow items to wrap */
+  gap: 0.8rem 1.2rem; /* Row gap, Column gap */
+  align-items: center; /* Vertically center items */
+  justify-content: center; /* Center content horizontally within the header */
+}
+.network-details p {
+    margin: 0; /* Remove default paragraph margin */
+    line-height: 1.2;
+    display: flex; /* Make each p a flex container itself */
+    align-items: center;
+    gap: 0.3rem; /* Space between label and value */
+    white-space: nowrap; /* Prevent breaking lines within a single network detail */
+}
+
+.network-badge {
+  padding: 0.2em 0.6em;
+  border-radius: 0.5em;
+  font-weight: 600;
+  color: white;
+  font-size: 0.75em;
+  display: inline-block;
+  min-width: 50px; /* Ensure consistent width */
+  text-align: center;
+}
+.network-badge.online { background-color: #28a745; } /* Green */
+.network-badge.offline { background-color: #dc3545; } /* Red */
+.network-badge.excellent { background-color: #28a745; } /* Green */
+.network-badge.good { background-color: #007bff; } /* Blue */
+.network-badge.fair { background-color: #ffc107; } /* Yellow */
+.network-badge.poor { background-color: #dc3545; } /* Red */
+
+
+.theme-toggle {
+  background: white;
+  color: var(--accent-color);
+  padding: 0.6rem 1rem;
+  border: none;
+  border-radius: 0.75rem; /* More rounded */
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.2s, color 0.2s, transform 0.1s, box-shadow 0.2s; /* Added box-shadow transition */
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+.theme-toggle:hover {
+    background: #f0f0f0;
+    transform: translateY(-2px); /* More pronounced lift */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15); /* More pronounced shadow */
+}
+.theme-toggle:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+
+/* --------------------
+  Sidebar (Filters + History)
+--------------------- */
+#sidebar {
+  grid-area: sidebar;
+  background: var(--sidebar-bg);
+  padding: 1.5rem;
+  overflow-y: auto; /* ALLOW SCROLLING IN SIDEBAR */
+  border-right: 1px solid var(--border-color);
+}
+
+.sidebar-section {
+  background: var(--main-bg);
+  border-radius: 0.75rem;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  box-shadow: var(--shadow-light);
+}
+.sidebar-section:last-child {
+    margin-bottom: 0;
+}
+
+#sidebar h3 {
+  margin-bottom: 0.8rem;
+  color: var(--text-color);
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.category-list {
+  list-style: none;
+  padding-left: 0;
+}
+
+.category-list li {
+  padding: 0.6rem 0.8rem;
+  border-radius: 0.5rem;
+  margin-bottom: 0.4rem;
+  cursor: pointer;
+  background: var(--bg-color); /* Use body bg for list items */
+  transition: background 0.2s, color 0.2s, transform 0.1s, box-shadow 0.2s; /* Added box-shadow transition */
+  font-weight: 500;
+  color: #4a5568; /* Darker gray for text */
+}
+body.dark .category-list li {
+    background: var(--dark-map-bg);
+    color: var(--dark-text);
+}
+
+.category-list li:hover:not(.active) {
+    background: var(--border-color);
+    transform: translateX(5px); /* More pronounced slide */
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1); /* Added shadow on hover */
+}
+body.dark .category-list li:hover:not(.active) {
+    background: #3a414f;
+}
+
+.category-list li.active {
+  background: var(--accent-color);
+  color: white;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.history-list {
+  list-style: none;
+  font-size: 0.9rem;
+  padding-left: 0;
+  color: #666;
+}
+body.dark .history-list {
+    color: #bbb;
+}
+.history-list li {
+    padding: 0.5rem 0;
+    border-bottom: 1px dashed var(--border-color);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    transition: background 0.2s; /* Added transition for history items */
+}
+.history-list li:hover {
+    background: rgba(0, 0, 0, 0.02); /* Subtle hover for history items */
+}
+body.dark .history-list li:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.history-list li:last-child {
+    border-bottom: none;
+}
+.history-list button {
+    background: var(--bg-color);
+    border: none;
+    padding: 0.3rem 0.6rem;
+    border-radius: 0.5rem;
+    font-size: 0.75rem;
+    cursor: pointer;
+    margin-left: 0.5rem;
+    transition: background 0.2s, transform 0.1s, box-shadow 0.2s; /* Added box-shadow transition */
+    color: #4a5568;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+body.dark .history-list button {
+    background: var(--dark-bg);
+    color: var(--dark-text);
+}
+.history-list button:hover {
+    background: var(--border-color);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+body.dark .history-list button:hover {
+    background: #5a6a7a;
+}
+
+
+/* --------------------
+  Main Section
+--------------------- */
+#main {
+  grid-area: main;
+  padding: 1.5rem;
+  background: var(--main-bg);
+  overflow-y: auto; /* ALLOW SCROLLING IN MAIN CONTENT */
+}
+
+.main-section {
+  background: var(--bg-color); /* Use lighter bg for internal sections */
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: var(--shadow-light);
+  border: 1px solid var(--border-color);
+}
+.main-section:last-child {
+    margin-bottom: 0;
+}
+
+#feedSection h2,
+#postFormSection h2 {
+  margin-bottom: 1rem;
+  color: var(--text-color);
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.feed-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Post Card */
+.post {
+  padding: 1rem;
+  border-left: 6px solid var(--accent-color);
+  border-radius: 0.75rem;
+  background: var(--main-bg); /* White background for posts */
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  transition: transform 0.1s ease-out, box-shadow 0.1s ease-out, outline 0.3s ease-in-out; /* Add outline to transition */
+  border: 1px solid var(--border-color);
+}
+.post:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.12);
+}
+
+/* Highlight for scroll-to-post feature */
+.post.highlight {
+    box-shadow: 0 0 0 4px var(--accent-color), 0 5px 15px rgba(0,0,0,0.2); /* Stronger glow */
+    transform: translateY(-5px) scale(1.01); /* Slightly lift and enlarge */
+    outline: 4px solid var(--accent-color); /* Alternative for highlight, or complement box-shadow */
+    outline-offset: 4px; /* Space between border and outline */
+}
+
+
+body.dark .post {
+  background: var(--dark-main-bg);
+  color: var(--dark-text);
+}
+
+.post.need {
+  border-left-color: var(--danger-color);
+}
+.post.offer {
+  border-left-color: var(--accent-color);
+}
+.post.alert {
+  border-left-color: var(--alert-color);
+}
+
+.post p {
+    margin: 0.5rem 0;
+    line-height: 1.5;
+}
+
+.post .info {
+  font-size: 0.85rem;
+  color: #555;
+  margin-top: 0.6rem;
+  line-height: 1.4;
+}
+body.dark .post .info {
+    color: #bbb;
+}
+
+.reactions {
+  margin-top: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.reactions button {
+  padding: 0.4rem 0.8rem;
+  border: none;
+  background: var(--bg-color);
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: background 0.2s, color 0.2s, transform 0.1s, box-shadow 0.2s; /* Added box-shadow transition */
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  color: #4a5568;
+}
+.reactions button:hover {
+    background: var(--border-color);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+.reactions button:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
+body.dark .reactions button {
+    background: var(--dark-bg);
+    color: var(--dark-text);
+}
+body.dark .reactions button:hover {
+    background: #5a6a7a;
+}
+
+/* Specific style for LLM button */
+.reactions button.llm-button {
+    background-color: #fceb00; /* Yellow for LLM button */
+    color: #333;
+    font-weight: bold;
+}
+.reactions button.llm-button:hover {
+    background-color: #e6d800;
+}
+.reactions button.llm-button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+    color: #666;
+}
+body.dark .reactions button.llm-button {
+    background-color: #fceb00;
+    color: #333;
+}
+body.dark .reactions button.llm-button:hover {
+    background-color: #e6d800;
+}
+body.dark .reactions button.llm-button:disabled {
+    background-color: #666;
+    color: #aaa;
+}
+
+
+/* --------------------
+  Post Form
+--------------------- */
+.post-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.post-form label {
+  font-weight: bold;
+  color: var(--text-color);
+}
+
+.post-form input,
+.post-form select,
+.post-form textarea {
+  padding: 0.8rem;
+  font-size: 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--border-color);
+  background: var(--main-bg);
+  color: var(--text-color);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.post-form input:focus,
+.post-form select:focus,
+.post-form textarea:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(0, 184, 148, 0.2); /* Accent color glow */
+}
+body.dark .post-form input,
+body.dark .post-form select,
+body.dark .post-form textarea {
+    background: var(--dark-map-bg);
+    border-color: var(--dark-border-color);
+    color: var(--dark-text);
+}
+body.dark .post-form input:focus,
+body.dark .post-form select:focus,
+body.dark .post-form textarea:focus {
+    box-shadow: 0 0 0 3px rgba(0, 184, 148, 0.3);
+}
+.post-form textarea {
+    resize: vertical;
+}
+
+
+.submit-button {
+  background: var(--accent-color);
+  color: white;
+  font-size: 1.1rem;
+  font-weight: bold;
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s, box-shadow 0.2s; /* Added box-shadow transition */
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+.submit-button:hover {
+  background: #00cba9;
+  transform: translateY(-2px); /* More pronounced lift */
+  box-shadow: 0 6px 12px rgba(0,0,0,0.15); /* More pronounced shadow */
+}
+.submit-button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* --------------------
+  Notification Panel (Floating)
+--------------------- */
+.notification-container {
+    position: fixed;
+    bottom: 1.5rem; /* Distance from bottom */
+    right: 1.5rem; /* Distance from right */
+    z-index: 1000; /* Ensure it's on top of other content */
+    max-width: 350px; /* Max width for notifications */
+    display: flex;
+    flex-direction: column-reverse; /* Newest notification at the bottom of the stack */
+    gap: 0.8rem; /* Space between notifications */
+    pointer-events: none; /* Allow clicks to pass through container */
+}
+
+.notification-item {
+    background: var(--main-bg);
+    padding: 0.8rem 1rem;
+    border-left: 4px solid var(--accent-color);
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+    font-size: 0.9rem;
+    color: var(--text-color);
+    opacity: 0; /* Start hidden for animation */
+    transform: translateX(100%); /* Start off-screen for animation */
+    animation: slideInRight 0.5s forwards ease-out, fadeOut 20s forwards 1s; /* Adjusted fadeOut duration */
+    pointer-events: auto; /* Allow clicks on individual notifications */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+}
+body.dark .notification-item {
+    background: var(--dark-main-bg);
+    color: var(--dark-text);
+    border-color: var(--accent-color); /* Keep accent color for consistency */
+}
+
+/* Notification type specific colors */
+.notification-item.notification-success { border-left-color: #28a745; } /* Green */
+.notification-item.notification-error { border-left-color: #dc3545; }   /* Red */
+.notification-item.notification-info { border-left-color: #007bff; }    /* Blue */
+
+.notification-item button {
+    background: var(--bg-color);
+    border: none;
+    padding: 0.3rem 0.6rem;
+    border-radius: 0.5rem;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s, box-shadow 0.2s; /* Added box-shadow transition */
+    color: #4a5568;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+body.dark .notification-item button {
+    background: var(--dark-bg);
+    color: var(--dark-text);
+}
+.notification-item button:hover {
+    background: var(--border-color);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+body.dark .notification-item button:hover {
+    background: #5a6a7a;
+}
+
+/* Keyframe Animations for Notifications */
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeOut {
+    0% { opacity: 1; transform: translateX(0); }
+    90% { opacity: 1; transform: translateX(0); } /* Stay visible for longer */
+    100% { opacity: 0; transform: translateX(100%); } /* Then fade out and slide away */
+}
+
+
+/* --------------------
+  Map Container
+--------------------- */
+.map-container {
+  grid-area: map; /* Ensure it's assigned to the grid area */
+  display: flex;
+  flex-direction: column;
+  /* Removed flex-grow: 1; min-height: 0; from desktop view to prevent shrinking */
+  overflow: hidden; /* Prevents scrollbars */
+  text-align: center;
+  margin-top: 1rem;
+  padding: 1rem;
+}
+
+#map {
+  flex-grow: 1; /* Allow map div to fill available space */
+  height: 100%; /* Important for Leaflet to render */
+  min-height: 300px; /* Ensure a minimum height for the map */
+}
+
+
+body.dark .map-container {
+  background: var(--dark-map-bg);
+}
+
+.map-container h3 {
+  margin-bottom: 1rem;
+  color: var(--text-color);
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.leaflet-map {
+  flex: 1;
+  height: 100%; /* Important for Leaflet to render */
+  border: 1px solid var(--border-color);
+  border-radius: 0.75rem;
+  box-shadow: var(--shadow-light);
+}
+
+/* Leaflet specific overrides for dark mode */
+body.dark .leaflet-tile-pane {
+  filter: invert(100%) hue-rotate(180deg) brightness(90%) contrast(90%);
+}
+body.dark .leaflet-control-attribution {
+    color: #eee !important;
+}
+
+.load-map-button {
+    background-color: var(--accent-color);
+    color: white;
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 0.75rem;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 1.5rem;
+    transition: background 0.2s, transform 0.1s, box-shadow 0.2s; /* Added box-shadow transition */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+.load-map-button:hover {
+    background: #00cba9;
+    transform: translateY(-2px); /* More pronounced lift */
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15); /* More pronounced shadow */
+}
+.load-map-button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+
+/* --------------------
+  Footer
+--------------------- */
+.site-footer {
+  grid-area: footer; /* Assign to the footer grid area */
+  background: var(--sidebar-bg); /* Use a subtle background */
+  color: var(--text-color);
+  padding: 1rem 1.5rem; /* Reduced padding for less height */
+  text-align: center;
+  border-top: 1px solid var(--border-color);
+  box-shadow: 0 -4px 10px rgba(0,0,0,0.05); /* Subtle shadow on top */
+}
+
+body.dark .site-footer {
+    background: var(--dark-sidebar-bg);
+}
+
+.footer-content-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem; /* Space between paragraphs */
+}
+
+.site-footer p {
+  margin: 0; /* Remove default paragraph margins */
+  font-size: 0.85rem;
+  line-height: 1.3;
+  color: #666;
+}
+body.dark .site-footer p {
+    color: #bbb;
+}
+
+.site-footer .copyright-text {
+    font-weight: 600;
+    margin-top: 0.5rem; /* Slightly more space for copyright */
+    color: var(--text-color);
+}
+body.dark .site-footer .copyright-text {
+    color: var(--dark-text);
+}
+
+.site-footer .support-link { /* Style for the support link */
+    color: var(--accent-color);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s;
+}
+
+.site-footer .support-link:hover {
+    color: #00cba9;
+    text-decoration: underline;
+}
+
+
+/* --------------------
+  Responsive Design
+--------------------- */
+@media (max-width: 980px) {
+  .app {
+    grid-template-columns: 1fr; /* Single column layout */
+    grid-template-rows: auto auto auto 1fr auto; /* Header, Sidebar, Map, Main, Footer */
+    grid-template-areas:
+      "header"
+      "sidebar"
+      "map"
+      "main"
+      "footer"; /* Footer also spans full width on mobile */
+    height: auto; /* Allow content to flow */
+    min-height: 100vh; /* Ensure it still takes full height */
+    border-radius: 0; /* Remove app border-radius on small screens */
+    box-shadow: none; /* Remove app shadow on small screens */
+  }
+  #sidebar {
+    border-right: none;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .map-container {
+      border-left: none;
+      border-bottom: 1px solid var(--border-color);
+  }
+
+  .leaflet-map {
+    height: 300px; /* Fixed height for map on smaller screens */
+  }
+
+  #header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.8rem;
+      padding: 1rem;
+  }
+  #header h1 {
+      font-size: 1.5rem;
+      margin-right: 0;
+  }
+  .network-details {
+      width: 100%;
+      flex-direction: row;
+      justify-content: space-around;
+      font-size: 0.8rem;
+      padding: 0.4rem 0.8rem;
+  }
+  .network-details p {
+      flex-grow: 1;
+      text-align: center;
+  }
+  .theme-toggle {
+      align-self: flex-end; /* Push to bottom right */
+      margin-top: 0.5rem;
+  }
+
+  .sidebar-section, .main-section, .map-container {
+      border-radius: 0; /* Remove section border-radius on small screens */
+      box-shadow: none; /* Remove section shadow on small screens */
+      border: none; /* Remove section borders */
+      padding: 1rem;
+  }
+  .sidebar-section {
+      background: var(--sidebar-bg); /* Maintain sidebar bg */
+  }
+  .main-section {
+      background: var(--main-bg); /* Maintain main bg */
+  }
+  .map-container {
+      background: var(--map-bg); /* Maintain map bg */
+  }
+
+  /* Adjust floating notifications for smaller screens */
+  .notification-container {
+      bottom: 1rem;
+      right: 1rem;
+      max-width: calc(100% - 2rem); /* Take full width minus padding */
+  }
+
+  .site-footer { /* Mobile footer adjustments */
+      padding: 0.8rem 1rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .post-form input,
+  .post-form select,
+  .post-form textarea {
+    font-size: 0.95rem;
+  }
+
+  .reactions button {
+      font-size: 0.8rem;
+      padding: 0.25rem 0.5rem;
+  }
+  .network-details {
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.5rem;
+  }
+  .network-details p {
+      flex-basis: 45%; /* Two items per row */
+      text-align: left;
+  }
+}
+
+/* Utility for text alignment */
+.text-center {
+    text-align: center;
+}
+.text-gray-500 {
+    color: #6b7280;
+}
+.py-4 {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+/* Scroll animation styles */
+.post {
+opacity: 0;
+transform: translateY(30px);
+transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.post.visible {
+opacity: 1;
+transform: translateY(0);
+}

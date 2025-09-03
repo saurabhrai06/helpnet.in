@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>helpnet.in – Civic Help Platform</title>
+  <link rel="stylesheet" href="./style.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="app">
+    <header id="header">
+      <div class="header-content">
+        <h1><span class="logo-text">helpnet.in</span> 🧭</h1>
+        <p id="location" class="header-info">📍 Detecting your location...</p>
+      </div>
+      <div id="networkStatusDetails" class="network-details">
+        <p><span id="onlineStatus" class="network-badge online"></span></p>
+        <p>Type: <span id="networkType">N/A</span></p>
+        <p>Speed: <span id="networkSpeed">N/A</span></p>
+        <p>Quality: <span id="networkQuality" class="network-badge"></span></p>
+      </div>
+      <button id="themeToggle" class="theme-toggle">🌓 Toggle Theme</button>
+    </header>
+
+    <aside id="sidebar">
+      <div class="sidebar-section">
+        <h3>Categories</h3>
+        <ul id="filterList" class="category-list">
+          <li data-type="all" class="active">🌍 All</li>
+          <li data-type="need">🆘 Need Help</li>
+          <li data-type="offer">✅ Offering Help</li>
+          <li data-type="alert">⚠️ Alerts</li>
+        </ul>
+      </div>
+
+      <div class="sidebar-section history-section">
+        <h3>Your Posts</h3>
+        <ul id="myHistory" class="history-list">
+          <li>No posts yet.</li>
+        </ul>
+      </div>
+    </aside>
+
+    <main id="main">
+      <section id="feedSection" class="main-section">
+        <h2>Live Community Feed 🗺️</h2>
+        <div id="feedContainer" class="feed-container">
+          </div>
+      </section>
+
+      <section id="postFormSection" class="main-section">
+        <h2>Create a Post</h2>
+        <form id="postForm" class="post-form">
+          <label for="type">Type:</label>
+          <select id="type" required>
+            <option value="need">🆘 Need Help</option>
+            <option value="offer">✅ Offering Help</option>
+            <option value="alert">⚠️ Alert</option>
+          </select>
+
+          <label for="urgency">Urgency:</label>
+          <select id="urgency">
+            <option value="low">🟢 Low</option>
+            <option value="medium">🟡 Medium</option>
+            <option value="high">🔴 High</option>
+          </select>
+
+          <label for="nickname">Nickname (optional):</label>
+          <input type="text" id="nickname" maxlength="20" placeholder="e.g., HelpfulTiger42" />
+
+          <label for="message">Message:</label>
+          <textarea id="message" rows="4" placeholder="What do you need or offer?" required></textarea>
+
+          <button type="submit" class="submit-button">📣 Post to Neighbors</button>
+        </form>
+      </section>
+    </main>
+
+    <div id="mapContainer" class="map-container">
+      <h3>Nearby Area</h3>
+      <div id="map" class="leaflet-map"></div>
+      <button id="loadMapBtn" class="load-map-button" style="display:none;">Load Map</button>
+    </div>
+  </div>
+
+  <div id="notificationContainer" class="notification-container">
+    </div>
+
+  <footer class="site-footer">
+    <div class="footer-content-wrapper">
+
+      <p class="copyright-text">© 2025 helpnet.in. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="./script.js"></script>
+</body>
+</html>
