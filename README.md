@@ -61,8 +61,7 @@ A real-time, hyperlocal web app for civic help requests, neighborhood alerts, an
 ## 🌍 Hosting
 
 The app is hosted using **GitHub Pages** at:  
-🔗 https://saurabhrai06.github.io/helpnet.in/
-
+https://helpnet-in-ka2e.vercel.app
 ---
 
 ## 📦 Future Ideas (Not Yet Implemented)
